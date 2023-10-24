@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import {
   DocumentBuilder,
   SwaggerDocumentOptions,
@@ -20,6 +20,11 @@ async function bootstrap() {
     }),
   );
   // app.setGlobalPrefix('api', { exclude: ['/robots.txt'] });
+
+  app.enableVersioning({
+    defaultVersion: '1',
+    type: VersioningType.URI,
+  });
 
   // Swagger
   const options: SwaggerDocumentOptions = {

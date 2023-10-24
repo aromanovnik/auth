@@ -13,7 +13,7 @@ export const configuration = () => ({
   },
   maxFileSize: 5000 * 1000,
   email: {
-    user: '',
-    pass: '',
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
