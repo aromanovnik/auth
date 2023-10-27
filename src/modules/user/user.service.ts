@@ -8,8 +8,8 @@ import { BaseService } from '../../core/base/base.service';
 export class UserService extends BaseService<User> {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    protected readonly repository: Repository<User>,
   ) {
-    super(usersRepository);
+    super();
   }
 }

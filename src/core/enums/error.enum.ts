@@ -1,4 +1,4 @@
-enum ErrorMessages {
+export enum ErrorMessages {
   IncorrectEmail = 'INCORRECT_EMAIL',
   IncorrectPassword = 'INCORRECT_PASSWORD',
   IncorrectNewPassword = 'INCORRECT_NEW_PASSWORD',

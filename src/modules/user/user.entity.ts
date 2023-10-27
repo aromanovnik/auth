@@ -28,6 +28,12 @@ export class User extends BaseEntity {
   description = '';
 
   @Column({
+    type: 'text',
+    default: '',
+  })
+  salt = '';
+
+  @Column({
     type: 'enum',
     enum: GenderEnum,
     default: GenderEnum.Empty,

@@ -1,30 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { BaseEntity } from './base.entity';
+import { ObjectLiteral, Repository } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
+import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
+import { DeepPartial } from 'typeorm/common/DeepPartial';
 
 @Injectable()
-export abstract class BaseService<T extends BaseEntity> {
-  constructor(private readonly repository: Repository<T>) {}
+export abstract class BaseService<T extends ObjectLiteral> {
+  protected repository: Repository<T>;
 
-  protected async findAll(): Promise<T[]> {
-    return this.repository.find();
+  async findAll(options?: FindManyOptions<T>): Promise<T[]> {
+    return this.repository.find(options);
   }
 
-  protected async findOne(id: T['id']): Promise<T | null> {
-    return this.repository.findOneBy({ id });
+  // protected async findOne(id: T['id']): Promise<T | null> {
+  async findOne(where: FindOptionsWhere<T>): Promise<T | null> {
+    return this.repository.findOneBy(where);
   }
 
-  protected async create(createDto: Partial<T>): Promise<T> {
-    const entity: T = this.repository.create(createDto as T);
+  async create(createDto: DeepPartial<T>): Promise<T> {
+    const entity: T = this.repository.create(createDto);
     return this.repository.save(entity);
   }
 
-  protected async update(id: number, updateDto: Partial<T>): Promise<T | null> {
+  async update(id: T['id'], updateDto: Partial<T>): Promise<T | null> {
     await this.repository.update(id, updateDto);
-    return this.findOne(id);
+    return this.findOne({ id });
   }
 
-  protected async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.repository.delete(id);
   }
 }
