@@ -1,9 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User, UserService } from '../user';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { LoginDto, ChangePasswordDto } from './dto';
-import { ErrorMessages } from '../../core';
+import { ErrorMessages, LoginModel } from '../../core';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -47,5 +52,14 @@ export class AuthService {
         expiresIn: '365d',
       },
     );
+  }
+
+  async login(dto: LoginDto): Promise<LoginModel | UnauthorizedException> {
+    const user = await this.validateUser(dto);
+    if (user instanceof User) {
+      return new LoginModel(this.generateToken(user));
+    }
+
+    return user;
   }
 }
