@@ -39,7 +39,7 @@ export class User extends BaseEntity {
     default: GenderEnum.Empty,
   })
   @IsOptional()
-  gender: GenderEnum = GenderEnum.Empty;
+  gender?: GenderEnum = GenderEnum.Empty;
 
   @Column({
     type: 'date',
@@ -48,7 +48,7 @@ export class User extends BaseEntity {
   })
   @IsOptional()
   @IsDate()
-  birthdate: string | null = null;
+  birthdate?: string | null = null;
 
   @Column({
     type: 'integer',
@@ -58,7 +58,7 @@ export class User extends BaseEntity {
   })
   @IsOptional()
   @IsPhoneNumber()
-  phone: number | null = null;
+  phone?: number | null = null;
 
   @Index()
   @Column({
@@ -83,7 +83,7 @@ export class User extends BaseEntity {
     type: 'varchar',
     default: null,
   })
-  verifyEmailToken: string;
+  verifyEmailToken?: string;
 
   @Column({ type: 'boolean', default: false })
   verifiedEmail: boolean;
@@ -92,5 +92,5 @@ export class User extends BaseEntity {
     type: 'jsonb',
     default: null,
   })
-  verifiedEmailsHistory: { date: Date; email: string }[];
+  verifiedEmailsHistory?: { date: Date; email: string }[];
 }
