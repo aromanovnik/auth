@@ -7,7 +7,7 @@ import {
 import { User, UserService } from '../user';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { LoginDto, ChangePasswordDto } from './dto';
+import { LoginDto, ChangePasswordDto, RegistrationDto } from './dto';
 import { ErrorMessages, LoginModel } from '../../core';
 import * as bcrypt from 'bcryptjs';
 
@@ -61,5 +61,36 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async registration(
+    dto: RegistrationDto,
+  ): Promise<LoginModel | HttpException> {
+    const candidate = await this.userService.findOne({ email: dto.email });
+
+    if (candidate) {
+      throw new HttpException(ErrorMessages.EmailExists, HttpStatus.FORBIDDEN);
+    }
+
+    const saltLength = this.configService.get<string>('auth.saltLength') ?? '1';
+    const salt = bcrypt.genSaltSync(parseInt(saltLength, 10));
+    const hashPassword = await bcrypt.hash(dto.password, salt);
+
+    const user = await this.userService.create({
+      email: dto.email,
+      password: hashPassword,
+      ...(dto.firstname && { firstName: dto.firstname }),
+      ...(dto.lastname && { lastName: dto.lastname }),
+      ...(dto.gender && { gender: dto.gender }),
+    });
+
+    if (user instanceof User) {
+      return new LoginModel(this.generateToken(user));
+    }
+
+    throw new HttpException(
+      ErrorMessages.InternalServerError,
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 }

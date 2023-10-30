@@ -42,7 +42,7 @@ export class User extends BaseEntity {
   gender: GenderEnum = GenderEnum.Empty;
 
   @Column({
-    type: 'datetime',
+    type: 'date',
     nullable: true,
     default: null,
   })
@@ -51,8 +51,7 @@ export class User extends BaseEntity {
   birthdate: string | null = null;
 
   @Column({
-    type: 'number',
-    length: 22,
+    type: 'integer',
     unique: true,
     nullable: true,
     default: null,
@@ -82,12 +81,16 @@ export class User extends BaseEntity {
   @Column({
     length: 256,
     type: 'varchar',
+    default: null,
   })
   verifyEmailToken: string;
 
   @Column({ type: 'boolean', default: false })
   verifiedEmail: boolean;
 
-  @Column({ type: 'jsonb' })
+  @Column({
+    type: 'jsonb',
+    default: null,
+  })
   verifiedEmailsHistory: { date: Date; email: string }[];
 }

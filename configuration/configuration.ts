@@ -9,7 +9,7 @@ export const configuration = () => ({
     host: process.env.POSTGRES_HOST,
   },
   auth: {
-    saltLength: 7,
+    saltLength: process.env.SALT_LENGTH,
   },
   maxFileSize: 5000 * 1000,
   email: {

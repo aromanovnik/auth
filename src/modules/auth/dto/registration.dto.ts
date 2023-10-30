@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { ErrorMessages, GenderEnum } from '../../../core';
 
 export class RegistrationDto {
@@ -34,6 +34,6 @@ export class RegistrationDto {
     required: false,
   })
   @IsOptional()
-  @IsString({ message: ErrorMessages.NotString })
+  @IsEnum(GenderEnum, { message: ErrorMessages.InvalidUserGender })
   readonly gender?: GenderEnum;
 }

@@ -14,6 +14,7 @@ export enum ErrorMessages {
   BadRequest = 'BAD_REQUEST',
   NotFound = 'NOT_FOUND',
   OnlyImageFilesAreAllowed = 'ONLY_IMAGE_FILES_ARE_ALLOWED',
+  InvalidUserGender = 'INVALID_USER_GENDER',
 }
 
 export type ErrorType = keyof typeof ErrorMessages;
@@ -34,4 +35,5 @@ export const errorMessageDescription: Record<ErrorType, string> = {
   BadRequest: 'Bad request',
   NotFound: 'Resource not found',
   OnlyImageFilesAreAllowed: 'Only image files are allowed',
+  InvalidUserGender: 'Invalid user gender',
 };
